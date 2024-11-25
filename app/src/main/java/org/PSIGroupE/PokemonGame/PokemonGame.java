@@ -24,11 +24,26 @@ public class PokemonGame {
     private boolean gameOver;
     private Player winner;
     
-    private PokemonGame() {
+    public PokemonGame() {
         scanner = new Scanner(System.in);
         random = new Random();
         createPokemonList();
         gameOver = false;
+    }
+
+    public PokemonGame(int doesntmatter) {
+        Pokemon[] pokemonArray1 = new Pokemon[4];
+        Pokemon[] pokemonArray2 = new Pokemon[4];
+        pokemonArray1[0] = PokemonFactory.createPokemon("Blastoise");
+        pokemonArray1[1] = PokemonFactory.createPokemon("Flareon");
+        pokemonArray1[2] = PokemonFactory.createPokemon("Garganacl");
+        pokemonArray1[3] = PokemonFactory.createPokemon("Gigalith");
+        pokemonArray2[0] = PokemonFactory.createPokemon("Hippowdon");
+        pokemonArray2[1] = PokemonFactory.createPokemon("Leafeon");
+        pokemonArray2[2] = PokemonFactory.createPokemon("Sandaconda");
+        pokemonArray2[3] = PokemonFactory.createPokemon("Sceptile");
+        player1 = new Player(1, pokemonArray1);
+        player2 = new Player(2, pokemonArray2);
     }
 
     private void start() {
@@ -270,7 +285,8 @@ public class PokemonGame {
         }
     }
 
+    /* Uncommented Main for testing purposes
     public static void main(String[] args) {
         new PokemonGame().start();
-    }
+    } */
 }
