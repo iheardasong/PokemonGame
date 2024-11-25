@@ -285,6 +285,14 @@ public class PokemonGame {
         }
     }
 
+		public Player getPlayer1() {
+			return player1;
+		}
+
+		public Player getPlayer2() {
+			return player2;
+		}
+
     /* Uncommented Main for testing purposes
     public static void main(String[] args) {
         new PokemonGame().start();
