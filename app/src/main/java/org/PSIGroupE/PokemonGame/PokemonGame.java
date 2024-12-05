@@ -7,6 +7,7 @@ import java.util.Random;
 public class PokemonGame {
 
     private GameState gameState;
+    private final TypeChart typeChart;
     private Player player1;
     private Player player2;
     private List<String> pokemonList;
@@ -15,6 +16,7 @@ public class PokemonGame {
 
     public PokemonGame() {
         random = new Random();
+        typeChart = new TypeChart();
         createPokemonList();
         gameState = GameState.S0AwaitingTeamSelection;
     }
@@ -124,8 +126,7 @@ public class PokemonGame {
         }
 
         if (fasterMove <= 4) {
-            int damage = computeDamage(fasterPlayer.getActivePokemon().getAttacks()[fasterMove - 1], slowerPlayer.getActivePokemon().getType()); // Very simple
-            slowerPlayer.getActivePokemon().decreaseHp(damage);
+            executeAttack(fasterPlayer.getActivePokemon(), slowerPlayer.getActivePokemon(), fasterMove - 1);
             // Call GUI function to inform about attack used and damage
         }
 
@@ -171,8 +172,37 @@ public class PokemonGame {
         }
     }
 
-    private int computeDamage(Attack attack, Type pType) {
-        // not implemented yet
+    private void executeAttack(Pokemon attackingPokemon, Pokemon defendingPokemon, int attackId) {
+        int power = attackingPokemon.getAttacks()[attackId].getPower();
+        int a = attackingPokemon.getAp();
+        int d = attackingPokemon.getDp();
+
+        // Critical hit
+        int crit;
+        if (random.nextInt(256) < (attackingPokemon.getSp() / 2)) {
+            crit = 2;
+        } else {
+            crit = 1;
+        }
+
+        //Same type attack bonus
+        double stab;
+        if (attackingPokemon.getAttacks()[attackId].getType() == attackingPokemon.getType()) {
+            stab = 1.5;
+        } else {
+            stab = 1.0;
+        }
+
+        // Type effectiveness
+        double eff = typeChart.getEffectiveness(attackingPokemon.getAttacks()[attackId].getType(), defendingPokemon.getType());
+
+        // Random parameter
+        int ran = random.nextInt(39) + 217;
+
+        // Damage calculation
+        int damage = (int) ((((200 * crit / 5 + 2) * power * (a / d)) / 50 + 2) * stab * eff * ran);
+
+        defendingPokemon.decreaseHp(damage);
     }
 
     public GameState selectNextPokemon(int next) {
