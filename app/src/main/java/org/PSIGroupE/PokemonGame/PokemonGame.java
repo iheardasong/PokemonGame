@@ -149,8 +149,7 @@ public class PokemonGame {
             }
 
         } else if (slowerMove <= 4) {
-            int damage = slowerPlayer.getActivePokemon().getAttacks()[slowerMove - 1].getPower() / 4; // Very simple
-            fasterPlayer.getActivePokemon().decreaseHp(damage);
+            executeAttack(slowerPlayer.getActivePokemon(), fasterPlayer.getActivePokemon(), slowerMove - 1);
             // Call GUI function to inform about attack used and damage
         }
 
